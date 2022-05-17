@@ -1,0 +1,44 @@
+---
+- name: netology-ml
+  hosts: devops
+  become: yes
+
+  tasks:
+
+  - name: Try ping
+    ansible.builtin.ping:
+
+  - name: Packages install
+    apt:
+      update_cache: yes
+      name:
+        - net-tools
+        - git
+        - tree
+        - htop
+        - mc
+        - vim
+      state: present
+
+  - name: Copy test.txt file
+    ansible.builtin.copy:
+      src: test.txt
+      dest: /tmp/
+
+  - name: Create groups
+    ansible.builtin.group:
+      name: "{{ item }}"
+      state: present
+    loop:
+      - devops_1
+      - test_1
+
+  - name: Create users
+    ansible.builtin.user:
+      name: "{{ item.name }}"
+      state: present
+      home: /home/"{{ item.name }}"
+      groups: "{{ item.groups }}"
+    loop:
+      - { name: devops_1, groups: devops_1 }
+      - { name: test_1, groups: test_1 }

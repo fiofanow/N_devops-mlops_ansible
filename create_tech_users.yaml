@@ -1,0 +1,14 @@
+---
+- name: Create technical login
+  hosts: devops
+  become: yes
+
+  tasks: 
+
+  - name: Create user = ansible, with password = ansible
+    ansible.builtin.user:
+      name: ansible
+      shell: /bin/bash
+      password: $6$RKF1iTj2bVRtNqEo$sNNZt6W9hrq.tIjOeGcDMWEUr751aEVPXPyAVKMJFSXVin6hAM4H8pXGlgVqU.jm2O9OxjL372tee8/i6FVpb0
+      groups: sudo
+      append: yes
